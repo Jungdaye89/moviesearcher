@@ -3,6 +3,7 @@ package com.moviesearcher.exception
 import com.moviesearcher.dto.response.ApiResponse
 import com.moviesearcher.dto.response.ErrorResponse
 import com.moviesearcher.exception.ExternalApiException
+import com.moviesearcher.exception.AuthException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -88,6 +89,17 @@ class GlobalExceptionHandler {
             code = "BIND_ERROR",
             message = ex.bindingResult.allErrors.firstOrNull()?.defaultMessage ?: "바인딩 실패",
             details = ex.bindingResult.toString()
+        )
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(ApiResponse(success = false, error = errorResponse))
+    }
+
+    @ExceptionHandler(AuthException::class)
+    fun handleAuthException(ex: AuthException, request: WebRequest): ResponseEntity<ApiResponse<Nothing>> {
+        val errorResponse = ErrorResponse(
+            code = ex.errorCode.code,
+            message = ex.errorCode.message,
+            details = ex.message
         )
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(ApiResponse(success = false, error = errorResponse))

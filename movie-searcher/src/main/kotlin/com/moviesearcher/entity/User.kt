@@ -11,14 +11,16 @@ data class User(
     val id: Long = 0,
 
     @Column(nullable = false)
-    val password: String,
+    val password: String = "",
 
     @Column(unique = true, nullable = false)
-    val name: String,
+    val name: String = "",
 
     @Column(name = "created_at")
     val createdAt: LocalDateTime = LocalDateTime.now(),
 
     @Column(name = "updated_at")
     val updatedAt: LocalDateTime = LocalDateTime.now()
-) 
+) {
+    constructor() : this(0, "", "", LocalDateTime.now(), LocalDateTime.now())
+} 

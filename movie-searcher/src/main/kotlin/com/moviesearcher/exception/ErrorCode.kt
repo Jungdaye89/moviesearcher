@@ -16,6 +16,8 @@ enum class ErrorCode(val code: String, val message: String) {
     USER_NOT_FOUND("AUTH_003", "사용자를 찾을 수 없습니다."),
     INVALID_TOKEN("AUTH_004", "유효하지 않은 토큰입니다."),
     TOKEN_EXPIRED("AUTH_005", "만료된 토큰입니다."),
+    AUTH_DUPLICATE_USER("AUTH_001", "이미 존재하는 사용자 이름입니다."),
+    AUTH_INVALID_CREDENTIALS("AUTH_002", "아이디 또는 비밀번호가 올바르지 않습니다."),
     
     // 서비스 에러
     SERVICE_UNAVAILABLE("SERVICE_001", "서비스를 일시적으로 이용할 수 없습니다."),
