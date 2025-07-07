@@ -16,7 +16,13 @@ class SecurityConfig(
         http
             .csrf { it.disable() }
             .authorizeHttpRequests {
-                it.requestMatchers("/api/auth/**").permitAll()
+                it.requestMatchers(
+                    "/api/auth/**",         // 로그인/회원가입
+                    "/api/movies/**",       // 영화 검색/상세 등
+                    "/actuator/health",     // 헬스체크
+                    "/swagger-ui/**",       // Swagger UI (필요시)
+                    "/v3/api-docs/**"       // Swagger Docs (필요시)
+                ).permitAll()
                 it.anyRequest().authenticated()
             }
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)

@@ -3,7 +3,7 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15
-    container_name: moviesearcher-postgres
+    container_name: postgres
     environment:
       POSTGRES_DB: moviesearcher_dev
       POSTGRES_USER: postgres
@@ -13,7 +13,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - moviesearcher-network
+      - moviesearcher-net
 
   redis:
     image: redis:7-alpine
@@ -23,12 +23,26 @@ services:
     volumes:
       - redis_data:/data
     networks:
-      - moviesearcher-network
+      - moviesearcher-net
+
+  moviesearcher:
+    image: jungdaye/moviesearcher:latest
+    container_name: moviesearcher
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/moviesearcher_dev
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+    depends_on:
+      - postgres
+    networks:
+      - moviesearcher-net
 
 volumes:
   postgres_data:
   redis_data:
 
 networks:
-  moviesearcher-network:
+  moviesearcher-net:
     driver: bridge 
