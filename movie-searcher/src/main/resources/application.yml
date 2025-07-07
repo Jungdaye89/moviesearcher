@@ -29,7 +29,7 @@ jwt:
 tmdb:
   api:
     base-url: https://api.themoviedb.org/3
-    key: 27c61a0fb8e79d5d69d037b47657fc68
+    key: ${TMDB_API_KEY}
     image-base-url: https://image.tmdb.org/t/p/w500
 
 # 로깅 설정
@@ -38,4 +38,10 @@ logging:
     com.moviesearcher: DEBUG
     org.springframework.web: DEBUG
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n" 
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info 

@@ -3,7 +3,7 @@ package com.moviesearcher
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = ["com.moviesearcher"])
 class MovieSearcherApplication
 
 fun main(args: Array<String>) {

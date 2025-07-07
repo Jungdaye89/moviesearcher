@@ -12,6 +12,10 @@ import org.springframework.web.context.request.WebRequest
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.validation.BindException
+import org.springframework.web.servlet.NoHandlerFoundException
+import org.springframework.web.servlet.resource.NoResourceFoundException
+import org.springframework.security.access.AccessDeniedException
+import org.springframework.security.core.AuthenticationException
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
@@ -105,12 +109,61 @@ class GlobalExceptionHandler {
             .body(ApiResponse(success = false, error = errorResponse))
     }
 
+    // 403 Forbidden 에러 처리 추가
+    @ExceptionHandler(AccessDeniedException::class)
+    fun handleAccessDeniedException(ex: AccessDeniedException, request: WebRequest): ResponseEntity<ApiResponse<Nothing>> {
+        println("[DEBUG] AccessDeniedException: ${ex.message}")
+        val errorResponse = ErrorResponse(
+            code = "FORBIDDEN",
+            message = "접근 권한이 없습니다.",
+            details = ex.message
+        )
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+            .body(ApiResponse(success = false, error = errorResponse))
+    }
+
+    // 인증 실패 에러 처리 추가
+    @ExceptionHandler(AuthenticationException::class)
+    fun handleAuthenticationException(ex: AuthenticationException, request: WebRequest): ResponseEntity<ApiResponse<Nothing>> {
+        println("[DEBUG] AuthenticationException: ${ex.message}")
+        val errorResponse = ErrorResponse(
+            code = "UNAUTHORIZED",
+            message = "인증이 필요합니다.",
+            details = ex.message
+        )
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .body(ApiResponse(success = false, error = errorResponse))
+    }
+
+    @ExceptionHandler(NoHandlerFoundException::class)
+    fun handleNoHandlerFoundException(ex: NoHandlerFoundException, request: WebRequest): ResponseEntity<ApiResponse<Nothing>> {
+        val errorResponse = ErrorResponse(
+            code = "NOT_FOUND",
+            message = "요청하신 리소스를 찾을 수 없습니다.",
+            details = ex.message
+        )
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(ApiResponse(success = false, error = errorResponse))
+    }
+
+    @ExceptionHandler(NoResourceFoundException::class)
+    fun handleNoResourceFoundException(ex: NoResourceFoundException, request: WebRequest): ResponseEntity<ApiResponse<Nothing>> {
+        val errorResponse = ErrorResponse(
+            code = "NOT_FOUND",
+            message = "정적 리소스를 찾을 수 없습니다.",
+            details = ex.message
+        )
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(ApiResponse(success = false, error = errorResponse))
+    }
+
     @ExceptionHandler(Exception::class)
     fun handleGenericException(ex: Exception, request: WebRequest): ResponseEntity<ApiResponse<Nothing>> {
+        println("[DEBUG] Generic Exception: ${ex.message}")
         val errorResponse = ErrorResponse(
             code = ErrorCode.INTERNAL_SERVER_ERROR.code,
             message = ErrorCode.INTERNAL_SERVER_ERROR.message,
-            details = "예상치 못한 오류가 발생했습니다."
+            details = ex.message
         )
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(ApiResponse(success = false, error = errorResponse))

@@ -19,6 +19,11 @@ enum class ErrorCode(val code: String, val message: String) {
     AUTH_DUPLICATE_USER("AUTH_001", "이미 존재하는 사용자 이름입니다."),
     AUTH_INVALID_CREDENTIALS("AUTH_002", "아이디 또는 비밀번호가 올바르지 않습니다."),
     
+    // 권한 관련 에러 (403 Forbidden)
+    ACCESS_DENIED("FORBIDDEN_001", "접근 권한이 없습니다."),
+    UNAUTHORIZED_ACCESS("FORBIDDEN_002", "인증이 필요합니다."),
+    INSUFFICIENT_PERMISSIONS("FORBIDDEN_003", "권한이 부족합니다."),
+    
     // 서비스 에러
     SERVICE_UNAVAILABLE("SERVICE_001", "서비스를 일시적으로 이용할 수 없습니다."),
     INTERNAL_SERVER_ERROR("SERVER_001", "서버 오류가 발생했습니다.")
