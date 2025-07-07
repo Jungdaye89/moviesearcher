@@ -35,14 +35,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push Docker image
-        # uses: docker/build-push-action@v4
-        # with:
-        #   context: ./movie-searcher
-        #   file: ./movie-searcher/Dockerfile
-        #   push: true
-        #   tags: jungdaye/moviesearcher:latest
-
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
