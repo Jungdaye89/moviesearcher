@@ -52,6 +52,7 @@ jobs:
             
             # docker-compose가 있는 폴더로 이동하여 실행합니다.
             cd movie-searcher
-            docker-compose pull
-            docker-compose up -d --force-recreate
+            docker-compose down # 기존 컨테이너를 모두 내립니다.
+            docker-compose pull # 최신 이미지를 받아옵니다.
+            docker-compose up -d  # 컨테이너를 새로 올립니다.
             docker image prune -f
