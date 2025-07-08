@@ -26,7 +26,7 @@ services:
       - moviesearcher-net
 
   moviesearcher:
-    build: .
+    image: jungdaye/moviesearcher:latest
     container_name: moviesearcher
     ports:
       - "8080:8080"
