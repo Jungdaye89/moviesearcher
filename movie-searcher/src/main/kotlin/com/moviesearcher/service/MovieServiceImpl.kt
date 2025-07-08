@@ -1,17 +1,26 @@
 package com.moviesearcher.service
 
 import com.moviesearcher.client.TmdbClient
+import com.moviesearcher.config.CacheConfig
 import com.moviesearcher.dto.response.*
 import com.moviesearcher.exception.InvalidSearchQueryException
 import com.moviesearcher.exception.MovieNotFoundException
 import com.moviesearcher.util.TmdbMapper.toMovieDetailDto
 import com.moviesearcher.util.TmdbMapper.toMovieDto
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class MovieServiceImpl(
     private val tmdbClient: TmdbClient
 ) : MovieService {
+
+    @Cacheable(
+        cacheNames = [CacheConfig.CacheNames.MOVIE_SEARCH],
+        key = "#query + '-' + #page"
+    )
+    @Transactional(readOnly = true)
     override fun searchMovies(query: String, page: Int): MovieSearchResponse {
         if (query.isBlank() || query.length > 100) {
             throw InvalidSearchQueryException(query, "검색어는 1~100자여야 합니다.")

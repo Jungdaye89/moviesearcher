@@ -2,10 +2,10 @@ version: '3.8'
 
 services:
   postgres:
-    image: postgres:15
+    image: postgres:latest
     container_name: postgres
     environment:
-      POSTGRES_DB: moviesearcher_dev
+      POSTGRES_DB: moviesearcher
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
     ports:
@@ -31,7 +31,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/moviesearcher_dev
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/moviesearcher
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: password
       TMDB_API_KEY: "27c61a0fb8e79d5d69d037b47657fc68"
