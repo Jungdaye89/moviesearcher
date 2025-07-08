@@ -38,11 +38,11 @@ jobs:
       - name: Deploy to EC2 instance
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_HOST }}             # GitHub Secrets에 저장된 EC2 IP
-          username: ${{ secrets.EC2_USERNAME }}     # GitHub Secrets에 저장된 EC2 사용자 이름 (예: ubuntu)
-          key: ${{ secrets.EC2_PRIVATE_KEY }}     # GitHub Secrets에 저장된 EC2 접속용 프라이빗 키
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd ~/movie-searcher
+            cd ~/moviesearcher/movie-searcher
             docker-compose pull
             docker-compose up -d --force-recreate
             docker image prune -f
